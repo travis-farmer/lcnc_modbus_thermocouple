@@ -2,18 +2,26 @@
 #include "Adafruit_MAX31855.h"
 #include <SoftwareSerial.h>
 #include <ModbusRTUSlave.h>
-
+#define PIN_RED 3
+#define PIN_AMBER 4
+#define PIN_GREEN 5
+#define PIN_BLUE 6
+#define PIN_WHITE 7
+#define PIN_BUZZER 8
+int sigTowerPins[6] = {PIN_RED, PIN_AMBER, PIN_GREEN, PIN_BLUE, PIN_WHITE, PIN_BUZZER};
 const uint8_t dePin = 2;
 Adafruit_MAX31855 thermocouple(10);
 ModbusRTUSlave modbus(Serial, dePin); // serial port, driver enable pin for rs-485 (optional)
 
-bool coils[2];
+bool coils[6];
 bool discreteInputs[3];
 uint16_t holdingRegisters[2];
 uint16_t inputRegisters[2];
 
 void setup() {
-
+  for (int i=0; i<6; i++) {
+    pinMode(sigTowerPins[i],OUTPUT); digitalWrite(sigTowerPins[i],LOW);
+  }
   thermocouple.begin();
   modbus.configureCoils(coils, 2);                       // bool array of coil values, number of coils
   modbus.configureDiscreteInputs(discreteInputs, 2);     // bool array of discrete input values, number of discrete inputs
@@ -41,4 +49,12 @@ void loop() {
   }
 
   modbus.poll();
+
+  digitalWrite(sigTowerPins[0],coils[0]);
+  digitalWrite(sigTowerPins[1],coils[1]);
+  digitalWrite(sigTowerPins[2],coils[2]);
+  digitalWrite(sigTowerPins[3],coils[3]);
+  digitalWrite(sigTowerPins[4],coils[4]);
+  digitalWrite(sigTowerPins[5],coils[5]);
+
 }
