@@ -23,7 +23,7 @@ void setup() {
 }
 
 void loop() {
-  
+  double c = thermocouple.readCelsius();
   double f = thermocouple.readFahrenheit();
   if (isnan(f)) {
     uint8_t e = thermocouple.readError();
@@ -31,12 +31,14 @@ void loop() {
     if (e & MAX31855_FAULT_SHORT_GND) discreteInputs[1] = 1;
     if (e & MAX31855_FAULT_SHORT_VCC) discreteInputs[2] = 1;
     inputRegisters[0] = 0;
+    inputRegisters[1] = 0;
   } else {
     inputRegisters[0] = (uint16_t)(f * 100);
+    inputRegisters[1] = (uint16_t)(c * 100);
     discreteInputs[0] = 0;
     discreteInputs[1] = 0;
     discreteInputs[2] = 0;
   }
- 
+
   modbus.poll();
 }
