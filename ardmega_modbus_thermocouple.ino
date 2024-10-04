@@ -22,7 +22,7 @@ void setup()
     modbus.configureDiscreteInputs(discreteInputs, 3);     // bool array of discrete input values, number of discrete inputs
     modbus.configureHoldingRegisters(holdingRegisters, 2); // unsigned 16 bit integer array of holding register values, number of holding registers
     modbus.configureInputRegisters(inputRegisters, 2);     // unsigned 16 bit integer array of input register values, number of input registers
-    modbus.begin(1, 9600);                                // slave id, baud rate, config (optional)
+    modbus.begin(3, 9600);                                // slave id, baud rate, config (optional)
 }
 
 void loop()
