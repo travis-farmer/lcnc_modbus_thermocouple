@@ -12,7 +12,7 @@ ModbusRTUSlave modbus(Serial1, dePin); // serial port, driver enable pin for rs-
 bool coils[6];
 bool discreteInputs[3];
 uint16_t holdingRegisters[2];
-uint16_t inputRegisters[4];
+uint16_t inputRegisters[18];
 
 void setup()
 {
@@ -21,7 +21,7 @@ void setup()
     modbus.configureCoils(coils, 6);                       // bool array of coil values, number of coils
     modbus.configureDiscreteInputs(discreteInputs, 3);     // bool array of discrete input values, number of discrete inputs
     modbus.configureHoldingRegisters(holdingRegisters, 2); // unsigned 16 bit integer array of holding register values, number of holding registers
-    modbus.configureInputRegisters(inputRegisters, 4);     // unsigned 16 bit integer array of input register values, number of input registers
+    modbus.configureInputRegisters(inputRegisters, 18);     // unsigned 16 bit integer array of input register values, number of input registers
     modbus.begin(3, 9600);                                // slave id, baud rate, config (optional)
 }
 
@@ -46,8 +46,22 @@ void loop()
         discreteInputs[1] = 0;
         discreteInputs[2] = 0;
     }
-    inputRegisters[2] = (uint16_t)(map(map(float(analogRead(0)),0.00,1023.00,0.00,5.00),0.50,4.50,0.00,150.00) * 100.00);
-    inputRegisters[3] = (uint16_t)(map(map(float(analogRead(1)),0.00,1023.00,0.00,5.00),0.50,4.50,0.00,150.00) * 100.00);
-
+    inputRegisters[2] = analogRead(0);
+    inputRegisters[3] = analogRead(1);
+    inputRegisters[4] = analogRead(2);
+    inputRegisters[5] = analogRead(3);
+    inputRegisters[6] = analogRead(4);
+    inputRegisters[7] = analogRead(5);
+    inputRegisters[8] = analogRead(6);
+    inputRegisters[9] = analogRead(7);
+    inputRegisters[10] = analogRead(8);
+    inputRegisters[11] = analogRead(9);
+    inputRegisters[12] = analogRead(10);
+    inputRegisters[13] = analogRead(11);
+    inputRegisters[14] = analogRead(12);
+    inputRegisters[15] = analogRead(13);
+    inputRegisters[16] = analogRead(14);
+    inputRegisters[17] = analogRead(15);
+    
     modbus.poll();
 }
